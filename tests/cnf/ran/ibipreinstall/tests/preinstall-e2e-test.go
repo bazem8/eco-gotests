@@ -235,16 +235,18 @@ var _ = Describe(
 			Expect(err).NotTo(HaveOccurred(),
 				tsparams.PreinstallServiceUnit+" must complete successfully on "+nodeInput.HostName)
 
-			By("Syncing filesystems to disk before preinstall BMH teardown")
-
-			err = helpers.SyncFilesystems(
-				context.TODO(),
-				nodeInput.HostName,
-				tsparams.TargetNodeSSHUser,
-				ibiCfg.PreinstallSSHKey,
-			)
-			Expect(err).NotTo(HaveOccurred(),
-				"sync must succeed on "+nodeInput.HostName+" before BMH delete")
+			// ACM-47065: leave this commented so BMH delete power-off is not
+			// preceded by a test-side sync. The product sync is inside lca-cli.
+			// By("Syncing filesystems to disk before preinstall BMH teardown")
+			//
+			// err = helpers.SyncFilesystems(
+			// 	context.TODO(),
+			// 	nodeInput.HostName,
+			// 	tsparams.TargetNodeSSHUser,
+			// 	ibiCfg.PreinstallSSHKey,
+			// )
+			// Expect(err).NotTo(HaveOccurred(),
+			// 	"sync must succeed on "+nodeInput.HostName+" before BMH delete")
 		})
 	},
 )
