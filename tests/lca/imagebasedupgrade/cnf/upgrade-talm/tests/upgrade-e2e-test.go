@@ -79,7 +79,9 @@ var _ = Describe(
 
 			By("Waiting until spoke IBU Upgrade completes")
 
-			Expect(cnfhelper.WaitForSpokeIBU(cnfhelper.SpokeUpgradeCompleted, 30*time.Minute)).To(Succeed(),
+			// ARM SNO pivot drops the spoke API for longer than 30m. Keep polling
+			// through that blackout before treating Upgrade as failed.
+			Expect(cnfhelper.WaitForSpokeIBU(cnfhelper.SpokeUpgradeCompleted, 60*time.Minute)).To(Succeed(),
 				"Upgrade did not complete on the spoke IBU")
 
 			By("Waiting until Prep+Upgrade IBGU completes")
